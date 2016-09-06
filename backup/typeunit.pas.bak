@@ -1,0 +1,38 @@
+unit typeunit;
+
+{$mode objfpc}{$H+}
+
+interface
+
+uses
+  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs;
+type
+  vec2=record
+    x:real;
+    y:real;
+  end;
+
+  boid=record
+    vel:vec2;
+    pos:vec2;
+    col:TColor;
+  end;
+
+  transf=record
+    trax:integer;
+    tray:integer;
+    scale:real;
+    w:integer;
+    h:integer;
+  end;
+
+implementation
+
+function vecAdd(v1,v2:vec2):vec2;
+begin
+  vecAdd.x:=v1.x+v2.x;
+  vecAdd.y:=v1.y+v2.y;
+end;
+
+end.
+
