@@ -19,6 +19,7 @@ type
     procedure Button1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure draw();
+    procedure FormDestroy(Sender: TObject);
     procedure Panel1Click(Sender: TObject);
     procedure Panel1MouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
@@ -47,18 +48,19 @@ var
   m:integer;
 begin
   randomize();
-  conversion.scale:=10;
+  conversion.scale:=5;
   conversion.trax:=math.floor(panel1.width/2);
   conversion.tray:=math.floor(panel1.height/2);
   conversion.w:=panel1.Width;
   conversion.h:=panel1.Height;
-  swarms:=2;
+  swarms:=3;
   SetLength(swarmarr,swarms);
   for i := 0 to length(swarmarr) do
   begin
     pos.x:=0;
     pos.y:=0;
     swarmarr[i] := swarm.Create(pos,10,0.1,101,RGBToColor(random(255),random(255),random(255)),RGBToColor(30,30,30));
+    swarmarr[i].velcap:=0.5+i*0.1;
   end;
   m:=length(swarmarr);
 
@@ -82,6 +84,18 @@ begin
   end;
 end;
 
+procedure TForm1.FormDestroy(Sender: TObject);
+var
+  i:integer;
+begin
+  for i:=0 to length(swarmarr) do
+  begin
+   // swarmarr[i].Destroy();
+  end;
+  //timer1.Enabled:=false;
+  //Sleep(500);
+end;
+
 procedure TForm1.Panel1Click(Sender: TObject);
 begin
 
@@ -94,7 +108,7 @@ i:integer;
 begin
   for i:=1 to length(swarmarr) do
   begin
-    swarmarr[0].setAim(X,Y,conversion);
+    swarmarr[i].setAim(X,Y,conversion);
   end;
 end;
 

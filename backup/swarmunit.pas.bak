@@ -22,6 +22,7 @@ type
     mdist: real;
     velcap: real;
     aim:vec2;
+    dampening:real;
     aimenabled:boolean;
     constructor Create(posin: vec2; posrange: real; velrange: real;
       size: integer; colorin: Tcolor; colrange: TColor);
@@ -29,6 +30,7 @@ type
     procedure draw(c: TCanvas; conv: transf);
     procedure step(conv: transf);
     procedure updateVel();
+    destructor Destroy();
   end;
 
 implementation
@@ -101,14 +103,16 @@ begin
   r := red(colorin);
   g := green(colorin);
   b := blue(colorin);
+   par1 := 0.001;//Anziehung zum Zentrum
+    par2 := 0.05;//Abstoßung von anderen Boids
+    par3 := 0.001;//Näherung von Geschwindigkeit
+    par4 := 0.0001;//Antziehung zum Ziel
+    mdist := 0.5;
+    velCap := 0.6;
+    dampening:=1;
   for i := 0 to length(boidsarr) - 1 do
   begin
-    par1 := 0.00001;//Anziehung zum Zentrum
-    par2 := 0.01;//Abstoßung von anderen Boids
-    par3 := 0.01;//Näherung von Geschwindigkeit
-    par4 := 0.0001;//Antziehung zum Ziel
-    mdist := 2;
-    velCap := 0.4;
+
     zwsch.x := (posin.x + randreal(posrange) - posrange / 2);
     zwsch.y := (posin.y + randreal(posrange) - posrange / 2);
     boidsarr[i].pos := zwsch;
@@ -132,6 +136,13 @@ begin
       b1 := b1 - 255;
     boidsarr[i].col := RGBToColor(r1, g1, b1);
   end;
+
+
+end;
+
+destructor swarm.destroy();
+begin
+
 
 end;
 
@@ -267,7 +278,7 @@ begin
     zwsch := vecAdd(zwsch, vecMul(rule2(boidsarr[i].pos), par2));
     zwsch := vecAdd(zwsch, vecMul(rule3(boidsarr[i].vel, avVel), par3));
     zwsch := vecAdd(zwsch, VecMul(VecSub(boidsarr[i].pos,aim), -par4));
-    boidsarr[i].vel := capVec(vecAdd(boidsarr[i].vel, zwsch), velCap);
+    boidsarr[i].vel := capVec(vecMul(vecAdd(boidsarr[i].vel, zwsch),dampening), velCap);
   end;
 end;
 

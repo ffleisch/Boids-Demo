@@ -7,6 +7,7 @@ object Form1: TForm1
   ClientHeight = 722
   ClientWidth = 960
   OnCreate = FormCreate
+  OnDestroy = FormDestroy
   LCLVersion = '1.4.4.0'
   object Panel1: TPanel
     Left = 136
@@ -28,7 +29,7 @@ object Form1: TForm1
   end
   object Timer1: TTimer
     Enabled = False
-    Interval = 33
+    Interval = 1
     OnTimer = Timer1Timer
     left = 24
     top = 72
