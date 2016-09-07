@@ -58,7 +58,7 @@ begin
   begin
     pos.x:=0;
     pos.y:=0;
-    swarmarr[i] := swarm.Create(pos,10,0.1,100,RGBToColor(random(255),random(255),random(255)),RGBToColor(30,30,30));
+    swarmarr[i] := swarm.Create(pos,10,0.1,101,RGBToColor(random(255),random(255),random(255)),RGBToColor(30,30,30));
   end;
   m:=length(swarmarr);
 
@@ -94,7 +94,7 @@ i:integer;
 begin
   for i:=1 to length(swarmarr) do
   begin
-    swarmarr[i].setAim(X,Y,conversion);
+    swarmarr[0].setAim(X,Y,conversion);
   end;
 end;
 

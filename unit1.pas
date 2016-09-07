@@ -94,7 +94,7 @@ i:integer;
 begin
   for i:=1 to length(swarmarr) do
   begin
-    swarmarr[i].setAim(X,Y,conversion);
+    swarmarr[1].setAim(X,Y,conversion);
   end;
 end;
 

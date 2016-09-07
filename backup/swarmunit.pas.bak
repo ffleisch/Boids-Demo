@@ -103,12 +103,12 @@ begin
   b := blue(colorin);
   for i := 0 to length(boidsarr) - 1 do
   begin
-    par1 := 0.0001;
-    par2 := 0.0001;
-    par3 := 0.01;
-    par4 := 0.0005;
-    mdist := 3;
-    velCap := 0.5;
+    par1 := 0.00001;//Anziehung zum Zentrum
+    par2 := 0.01;//Abstoßung von anderen Boids
+    par3 := 0.01;//Näherung von Geschwindigkeit
+    par4 := 0.0001;//Antziehung zum Ziel
+    mdist := 2;
+    velCap := 0.4;
     zwsch.x := (posin.x + randreal(posrange) - posrange / 2);
     zwsch.y := (posin.y + randreal(posrange) - posrange / 2);
     boidsarr[i].pos := zwsch;
@@ -226,6 +226,8 @@ function swarm.rule2(inVec: vec2): vec2;
 var
   i: integer;
   zwsch: vec2;
+  zwsch2: vec2;
+  l:real;
 begin
   zwsch.x := 0;
   zwsch.y := 0;
@@ -234,7 +236,11 @@ begin
 
     if (vecDist(boidsarr[i].pos, inVec) < mdist) then
     begin
-      zwsch := vecAdd(zwsch, vecSub(inVec, boidsarr[i].pos));
+      //zwsch := vecAdd(zwsch, vecSub(inVec, boidsarr[i].pos));
+      zwsch2:= vecSub(inVec, boidsarr[i].pos);
+      l:=vecLength(zwsch2);
+      if(l>0)then
+      zwsch := vecAdd(zwsch, vecDiv(zwsch2,l));
     end;
   end;
   rule2 := zwsch;
@@ -242,7 +248,7 @@ end;
 
 function swarm.rule3(inVec, avrgVel: vec2): vec2;
 begin
-  rule3 := VecSub(avrgVel, vecDiv(inVec, length(boidsarr)));
+  rule3 := vecSub(avrgVel, vecDiv(inVec, length(boidsarr)));
 end;
 
 procedure swarm.updateVel();
@@ -254,6 +260,7 @@ var
 begin
   center := findCenter();
   avVel := findAvrgVel();
+  //center:=vecAdd(center,vecMul(vecSub(aim,center),-par4));
   for i := 0 to length(boidsarr) do
   begin
     zwsch := vecMul(rule1(boidsarr[i].pos, center), par1);
